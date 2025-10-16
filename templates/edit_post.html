@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>編輯文章</title>
+</head>
+<body>
+    <h1>編輯文章</h1>
+    <form method="post">
+        標題：<input type="text" name="title" value="{{ post.title }}"><br>
+        作者：<input type="text" name="author" value="{{ post.author }}"><br>
+        內容：<br>
+        <textarea name="content" rows="5" cols="40">{{ post.content }}</textarea><br>
+        <input type="submit" value="儲存">
+    </form>
+    <a href="{{ url_for('post_detail', post_id=post.id) }}">回文章</a>
+</body>
+</html>
