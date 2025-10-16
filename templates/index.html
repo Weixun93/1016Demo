@@ -1,25 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>簡易部落格</title>
-</head>
-<body>
-    <h1>部落格文章列表</h1>
-    {% if session.get('user_id') %}
-        歡迎，{{ session.get('username') }}！
-        <a href="{{ url_for('logout') }}">登出</a>
-        <a href="{{ url_for('new_post') }}">新增文章</a>
-    {% else %}
-        <a href="{{ url_for('login') }}">登入</a>
-        <a href="{{ url_for('register') }}">註冊</a>
-    {% endif %}
-    <ul>
+{% extends 'base.html' %}
+{% block title %}部落格文章列表{% endblock %}
+{% block content %}
+    <h2 class="mb-4">部落格文章列表</h2>
+    <div class="list-group">
         {% for post in posts %}
-        <li>
-            <a href="{{ url_for('post_detail', post_id=post.id) }}">{{ post.title }}</a>
-            - 作者：{{ post.author }}
-        </li>
+        <a href="{{ url_for('post_detail', post_id=post.id) }}" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{ post.title }}</h5>
+                <small>作者：{{ post.author }}</small>
+            </div>
+        </a>
         {% endfor %}
-    </ul>
-</body>
-</html>
+    </div>
+{% endblock %}
