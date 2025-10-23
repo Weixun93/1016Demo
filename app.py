@@ -2,11 +2,17 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify, a
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'your_secret_key'  # 請改成安全的隨機字串
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your_secret_key')
 
 db = SQLAlchemy(app)
 
@@ -180,7 +186,9 @@ def logout():
 	flash('已登出')
 	return redirect(url_for('index'))
 
-import os
+with app.app_context():
+    db.create_all()
+	
 if __name__ == '__main__':
 	# 若 blog.db 已存在則刪除，確保新結構
 	if os.path.exists('blog.db'):
